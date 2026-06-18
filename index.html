@@ -1,0 +1,2074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/x-icon" href="logo.ico">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portfolio 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700;900&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --bg:       #35394a;
+    --blue:     #0145f2;
+    --light:    #edf1f5;
+    --mint:     #24eb9e;
+    --bg-dark:  #262936;
+    --bg-card:  #2c3040;
+    --font-display: 'Unbounded', sans-serif;
+    --font-body:    'Lexend', sans-serif;
+    --nav-h: 68px;
+  }
+
+  /* ── RESET ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--light);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { display: block; max-width: 100%; }
+
+  /* ── PAGE SYSTEM ── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ════════════════════════════════
+     WELCOME SPLASH
+  ════════════════════════════════ */
+  #welcome-splash {
+    position: fixed; inset: 0;
+    z-index: 999;
+    background: var(--bg-dark);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
+    overflow: hidden;
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  #welcome-splash.dismissing {
+    opacity: 0;
+    transform: scale(1.04);
+    pointer-events: none;
+  }
+  .splash-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(237,241,245,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(237,241,245,.03) 1px, transparent 1px);
+    background-size: 72px 72px;
+    animation: gridDrift 18s linear infinite;
+  }
+  @keyframes gridDrift {
+    from { background-position: 0 0; }
+    to   { background-position: 72px 72px; }
+  }
+  .splash-orb {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(80px);
+    animation: orbPulse 6s ease-in-out infinite alternate;
+  }
+  .splash-orb--blue { width: 600px; height: 600px; background: rgba(1,69,242,.18); top: -120px; left: -100px; }
+  .splash-orb--mint { width: 500px; height: 500px; background: rgba(36,235,158,.13); bottom: -100px; right: -80px; animation-delay: -3s; }
+  @keyframes orbPulse {
+    from { transform: scale(1); opacity: .6; }
+    to   { transform: scale(1.18); opacity: 1; }
+  }
+  .splash-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    display: flex; flex-direction: column;
+    align-items: center;
+  }
+  .splash-year {
+    font-family: var(--font-display);
+    font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+    font-weight: 400;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--mint);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: splashFadeUp .8s .2s forwards;
+  }
+  .splash-title {
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 9vw, 8rem);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    color: var(--light);
+    opacity: 0;
+    animation: splashFadeUp .9s .4s forwards;
+  }
+  .splash-title span {
+    display: block;
+    background-image: linear-gradient(35deg,  #0145f2, #24eb9e);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent
+    /*-webkit-text-stroke: 1.5px rgba(237,241,245,.25)*/;
+  }
+  .splash-sub {
+    margin-top: 32px;
+    font-family: var(--font-body);
+    font-size: clamp(0.8rem, 1.5vw, 0.92rem);
+    color: rgba(237,241,245,.4);
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    max-width: 340px;
+    opacity: 0;
+    animation: splashFadeUp .9s .65s forwards;
+  }
+  .splash-cta {
+    margin-top: 64px;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    opacity: 0;
+    animation: splashFadeUp .9s .9s forwards;
+  }
+  .splash-cta-ring {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(237, 241, 245, 0.5);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    transition: border-color .3s;
+  }
+  #welcome-splash:hover .splash-cta-ring { border-color: var(--mint); }
+  .splash-cta-ring::before {
+    content: '';
+    position: absolute; inset: -8px;
+    border-radius: 50%;
+    border: 1px solid rgba(36,235,158,.15);
+    animation: ringExpand 2.2s ease-out infinite;
+  }
+  .splash-cta-ring::after {
+    content: '';
+    position: absolute; inset: -16px;
+    border-radius: 50%;
+    border: 1px solid rgba(36,235,158,.07);
+    animation: ringExpand 2.2s .5s ease-out infinite;
+  }
+  @keyframes ringExpand {
+    0%   { transform: scale(1); opacity: .5; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  .splash-cta-arrow { color: var(--light); transition: color .3s; }
+  #welcome-splash:hover .splash-cta-arrow { color: var(--mint); }
+  .splash-cta-label {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(237,241,245,.35);
+    transition: color .3s;
+  }
+  #welcome-splash:hover .splash-cta-label { color: rgba(237,241,245,.7); }
+  .splash-corner {
+    position: absolute;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: rgba(237,241,245,.2);
+  }
+  .splash-corner--tl { top: 28px; left: 36px; }
+  .splash-corner--tr { top: 28px; right: 36px; text-align: right; }
+  .splash-corner--bl { bottom: 28px; left: 36px; }
+  .splash-corner--br { bottom: 28px; right: 36px; text-align: right; }
+  .splash-name {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    font-family: var(--font-body);
+    font-size: clamp(0.55rem, 1.1vw, 0.78rem);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mint);
+    padding: 6px 20px;
+    border-radius: 100px;
+    border: 1px solid rgba(36,235,158,.35);
+    background: rgba(36,235,158,.05);
+    white-space: nowrap;
+    opacity: 0;
+    animation: splashNameIn .8s .2s forwards;
+    z-index: 2;
+  }
+  @keyframes splashNameIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+  @keyframes splashFadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @media (max-width: 768px) {
+    .splash-corner { display: none; }
+    .splash-title { -webkit-text-stroke-width: 1px; }
+  }
+
+  /* ════════════════════════════════
+     NAVBAR
+  ════════════════════════════════ */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    background: rgba(38,41,54,.82);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(237,241,245,.07);
+    z-index: 100;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--light);
+    cursor: pointer;
+    transition: color .2s;
+  }
+  .nav-logo span { color: var(--mint); }
+  .nav-logo:hover { color: var(--mint); }
+  .nav-links { display: flex; gap: 36px; align-items: center; }
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(237,241,245,.7);
+    transition: color .2s;
+    cursor: pointer;
+  }
+  .nav-links a:hover { color: var(--mint); }
+  .nav-back {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(237,241,245,.6);
+    cursor: pointer;
+    transition: color .2s;
+    background: none; border: none; outline: none;
+  }
+  .nav-back:hover { color: var(--mint); }
+  .nav-back svg { transition: transform .2s; }
+  .nav-back:hover svg { transform: translateX(-3px); }
+
+  /* ════════════════════════════════
+     HOME — HERO SPLIT
+  ════════════════════════════════ */
+  .hero {
+    height: 100vh;
+    display: grid;
+    /* default: 50/50. JS writes the actual split on hover */
+    grid-template-columns: 1fr 1fr;
+    padding-top: var(--nav-h);
+    transition: grid-template-columns .6s cubic-bezier(.77,0,.18,1);
+  }
+  /* Hover states driven by JS adding classes to .hero */
+  .hero.hover-gd { grid-template-columns: 3fr 1fr; }
+  .hero.hover-ve { grid-template-columns: 1fr 3fr; }
+
+  .hero-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 56px 52px;
+    /* no flex transition needed — grid handles it */
+  }
+
+  /* ── Layer 1: background image (owner-settable) ── */
+  .hero-card .hero-bg {
+    position: absolute; inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* dimmed by default, brightens on hover */
+    opacity: .28;
+    transform: scale(1.06);
+    transition: opacity .65s ease, transform .65s ease;
+    z-index: 0;
+  }
+  .hero-card:hover .hero-bg {
+    opacity: .48;
+    transform: scale(1);
+  }
+
+  /* ── Layer 2: dark base tint (always present) ── */
+  .hero-card--gd { background: var(--bg-dark); border-right: 1px solid rgba(1,69,242,.18); }
+  .hero-card--ve { background: var(--bg-dark); }
+
+  /* ── Layer 3: noise texture ── */
+  .hero-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: .55;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── Layer 4: radial gradient accent (preserved) ── */
+  .hero-card--gd::after {
+    content: '';
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(1,69,242,.38) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    pointer-events: none;
+    transition: transform .65s ease, opacity .65s ease;
+    z-index: 2;
+  }
+  .hero-card--ve::after {
+    content: '';
+    position: absolute;
+    width: 520px; height: 520px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(36,235,158,.28) 0%, transparent 70%);
+    bottom: -140px; right: -100px;
+    pointer-events: none;
+    transition: transform .65s ease, opacity .65s ease;
+    z-index: 2;
+  }
+  .hero-card--gd:hover::after { transform: translate(50px, 50px) scale(1.2); }
+  .hero-card--ve:hover::after { transform: translate(-50px, -50px) scale(1.2); }
+
+  /* ── Bottom gradient scrim so text stays readable ── */
+  .hero-card .hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(28,31,42,.92) 0%,
+      rgba(28,31,42,.55) 40%,
+      rgba(28,31,42,.1)  70%,
+      transparent 100%
+    );
+    z-index: 3;
+    pointer-events: none;
+    transition: opacity .5s ease;
+  }
+
+  /* Content z-index above all layers */
+  .hero-tag, .hero-num, .hero-title, .hero-sub, .hero-cta { position: relative; z-index: 4; }
+
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+    border: 1px solid currentColor;
+    width: fit-content;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .hero-card--gd .hero-tag { color: var(--blue); background: rgba(1,69,242,.1); }
+  .hero-card--ve .hero-tag { color: var(--mint); background: rgba(36,235,158,.08); }
+
+  .hero-num {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 10vw, 11rem);
+    font-weight: 900;
+    line-height: 1;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -55%);
+    opacity: .05;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 4;
+    transition: opacity .4s, letter-spacing .5s;
+  }
+  .hero-card:hover .hero-num { opacity: .1; letter-spacing: 0.04em; }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 2.8vw, 3rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    transition: transform .4s ease;
+  }
+  .hero-card:hover .hero-title { transform: translateY(-4px); }
+  .hero-card--gd .hero-title em { color: var(--blue); font-style: normal; }
+  .hero-card--ve .hero-title em { color: var(--mint); font-style: normal; }
+
+  .hero-sub {
+    font-size: 0.84rem;
+    color: rgba(237,241,245,.6);
+    line-height: 1.65;
+    max-width: 320px;
+    margin-bottom: 36px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .4s .1s ease, transform .4s .1s ease;
+  }
+  .hero-card:hover .hero-sub { opacity: 1; transform: translateY(0); }
+
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 6px;
+    transition: transform .25s, box-shadow .25s, opacity .35s;
+    width: fit-content;
+    border: none; cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .hero-card:hover .hero-cta { opacity: 1; transform: translateY(0); }
+  .hero-card--gd .hero-cta { background: var(--blue); color: var(--light); }
+  .hero-card--gd .hero-cta:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 32px rgba(1,69,242,.5); }
+  .hero-card--ve .hero-cta { background: var(--mint); color: #1a1d28; }
+  .hero-card--ve .hero-cta:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 32px rgba(36,235,158,.4); }
+
+  /* Divider line */
+  .hero-divider {
+    position: absolute;
+    left: 50%; top: var(--nav-h);
+    width: 1px;
+    height: calc(100% - var(--nav-h));
+    background: linear-gradient(to bottom, transparent, rgba(237,241,245,.12) 30%, rgba(237,241,245,.12) 70%, transparent);
+    pointer-events: none;
+    z-index: 10;
+    transition: left .6s cubic-bezier(.77,0,.18,1), opacity .3s;
+  }
+  .hero.hover-gd .hero-divider { left: 75%; }
+  .hero.hover-ve .hero-divider { left: 25%; }
+
+  /* Mobile: stack vertically, no grid animation */
+  @media (max-width: 768px) {
+    .hero {
+      grid-template-columns: 1fr !important;
+      grid-template-rows: 1fr 1fr;
+      height: calc(100vh - var(--nav-h));
+      margin-top: var(--nav-h);
+      padding-top: 0;
+      transition: none;
+    }
+    .hero.hover-gd, .hero.hover-ve { grid-template-columns: 1fr !important; }
+    .hero-divider { display: none; }
+    .hero-card--gd { border-right: none; border-bottom: 1px solid rgba(1,69,242,.18); }
+    .hero-num { font-size: 5rem; }
+    /* Always show sub & cta on mobile (no hover state) */
+    .hero-sub { opacity: 1; transform: none; }
+    .hero-cta { opacity: 1; transform: none; }
+  }
+
+  /* ════════════════════════════════
+     ABOUT SECTION
+  ════════════════════════════════ */
+  #about {
+    padding: 120px 40px 100px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--mint);
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .about-body {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    align-items: start;
+    margin-top: 50px;
+  }
+  .about-text p {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: rgba(237,241,245,.75);
+    margin-bottom: 18px;
+  }
+  .about-skill-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 36px;
+  }
+  .skill-category { display: flex; flex-direction: column; gap: 10px; }
+  .skill-category-label {
+    font-family: var(--font-body);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(237,241,245,.35);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .skill-category-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(237,241,245,.07);
+  }
+  .skill-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-chip {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid rgba(237,241,245,.12);
+    color: rgba(237,241,245,.65);
+  }
+  .skill-chip--creative { border-color: rgba(1,69,242,.3); color: rgba(150,180,255,.85); }
+  .skill-chip--ai       { border-color: rgba(36,235,158,.25); color: rgba(100,230,180,.85); }
+  .skill-chip--lang     { border-color: rgba(237,241,245,.15); color: rgba(237,241,245,.65); }
+  .about-stats { display: flex; flex-direction: column; gap: 32px; }
+  .stat-item { border-left: 2px solid var(--blue); padding-left: 20px; }
+  .stat-num { font-family: var(--font-display); font-size: 2.6rem; font-weight: 700; color: var(--light); line-height: 1; }
+  .stat-num span { color: var(--mint); }
+  .stat-label { font-size: 0.78rem; color: rgba(237,241,245,.5); margin-top: 6px; letter-spacing: 0.04em; }
+  .resume-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 12px;
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--light);
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: 1px solid rgba(237,241,245,.2);
+    background: transparent;
+    transition: border-color .2s, color .2s, background .2s, transform .2s;
+    width: fit-content;
+    cursor: pointer;
+  }
+  .resume-btn:hover {
+    border-color: var(--mint);
+    color: var(--mint);
+    transform: translateY(-2px);
+  }
+  @media (max-width: 768px) {
+    .about-body { grid-template-columns: 1fr; gap: 40px; }
+    #about { padding: 80px 24px; }
+  }
+
+  /* ════════════════════════════════
+     CONTACT SECTION
+  ════════════════════════════════ */
+  #contact {
+    padding: 100px 40px 120px;
+    border-top: 1px solid rgba(237,241,245,.06);
+    background: var(--bg-dark);
+  }
+  .contact-inner { max-width: 700px; margin: 0 auto; text-align: center; }
+  .contact-inner .section-title { margin-bottom: 16px; }
+  .contact-desc { font-size: 0.9rem; color: rgba(237,241,245,.55); line-height: 1.7; margin-bottom: 48px; }
+  .contact-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 14px 30px;
+    border-radius: 6px;
+    border: 1px solid rgba(237,241,245,.15);
+    color: var(--light);
+    cursor: pointer;
+    transition: border-color .2s, color .2s, transform .2s;
+  }
+  .contact-link:hover { border-color: var(--mint); color: var(--mint); transform: translateY(-2px); }
+  .contact-link.primary { background: var(--blue); border-color: var(--blue); color: var(--light); }
+  .contact-link.primary:hover { background: transparent; border-color: var(--blue); color: var(--blue); }
+  @media (max-width: 768px) { #contact { padding: 80px 24px; } }
+
+  /* ════════════════════════════════
+     FOOTER
+  ════════════════════════════════ */
+  footer {
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(237,241,245,.06);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-logo { font-family: var(--font-display); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.04em; color: rgba(237,241,245,.4); }
+  .footer-copy { font-size: 0.72rem; color: rgba(237,241,245,.3); }
+  @media (max-width: 768px) { footer { flex-direction: column; gap: 10px; text-align: center; padding: 24px; } }
+
+  /* ════════════════════════════════
+     GRAPHIC DESIGN PAGE — CAROUSEL LAYOUT
+  ════════════════════════════════ */
+  #page-gd { padding-top: var(--nav-h); min-height: 100vh; background: var(--bg); }
+
+  /* ── Subpage hero ── */
+  .subpage-hero {
+    padding: 72px 60px 56px;
+    border-bottom: 1px solid rgba(237,241,245,.06);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .subpage-hero .section-title { margin-bottom: 10px; }
+  .subpage-desc { font-size: 0.88rem; color: rgba(237,241,245,.45); line-height: 1.7; max-width: 480px; }
+  .subpage-count {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(237,241,245,.1);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  /* ── Section nav ── */
+  .gd-nav {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 50;
+    display: flex;
+    gap: 0;
+    background: rgba(38,41,54,.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(237,241,245,.07);
+    padding: 0 60px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .gd-nav::-webkit-scrollbar { display: none; }
+  .gd-nav-item {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(237,241,245,.3);
+    padding: 18px 22px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .gd-nav-item:hover { color: rgba(237,241,245,.7); }
+  .gd-nav-item.active { color: var(--light); border-bottom-color: var(--blue); }
+
+  /* ── Section wrapper ── */
+  .gd-section {
+    padding: 72px 0 88px;
+    border-bottom: 1px solid rgba(237,241,245,.05);
+    position: relative;
+    overflow: hidden;
+  }
+  .gd-section:last-of-type { border-bottom: none; }
+
+  /* Section header — inside padding */
+  .gd-section-header {
+    padding: 0 60px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 40px;
+  }
+
+  .gd-section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--light);
+    line-height: 1.05;
+    margin-bottom: 14px;
+    padding-bottom: 16px;
+    position: relative;
+  }
+  .gd-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 48px; height: 2px;
+    background: var(--blue);
+    border-radius: 2px;
+  }
+  .gd-section-desc {
+    font-size: 0.83rem;
+    color: rgba(237,241,245,.42);
+    line-height: 1.75;
+    max-width: 500px;
+  }
+  
+
+  /* ── Projects list (vertical stack) ── */
+  .gd-projects { display: flex; flex-direction: column; gap: 56px; }
+
+  /* ── Single project ── */
+  .gd-project {}
+  .gd-project-meta {
+    padding: 0 60px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .gd-project-name {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.8vw, 1.3rem);
+    font-weight: 700;
+    color: var(--light);
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .gd-project-desc {
+    font-size: 0.8rem;
+    color: rgba(237,241,245,.4);
+    line-height: 1.7;
+    max-width: 490px;
+  }
+  .gd-project-tag {
+    font-family: var(--font-body);
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue);
+    padding: 5px 13px;
+    border-radius: 100px;
+    border: 1px solid rgba(1,69,242,.3);
+    background: rgba(1,69,242,.06);
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 4px;
+  }
+
+  /* ── Carousel track ── */
+  .gd-carousel {
+    position: relative;
+    overflow: hidden;
+    /* fade edges */
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+  }
+  .gd-carousel-track {
+    display: flex;
+    gap: 12px;
+    padding: 8px 60px;
+    width: max-content;
+    /* animation set by JS */
+    will-change: transform;
+  }
+  .gd-carousel-track.paused { animation-play-state: paused !important; }
+
+  /* ── Carousel image cell ── */
+  .gd-img {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--bg-dark);
+    cursor: pointer;
+    flex-shrink: 0;
+    height: 300px;           /* uniform height for every image */
+    transition: box-shadow .3s ease;
+    border: 1px solid rgba(237,241,245,.06);
+  }
+  .gd-img:hover {
+    box-shadow: 0 12px 48px rgba(0,0,0,.55);
+    z-index: 2;
+  }
+  /* Width is derived from aspect ratio × fixed height */
+  .gd-img--sq  { width: 300px;  }   /* 1:1   → 300px */
+  .gd-img--169 { width: 533px;  }   /* 16:9  → 533px */
+  .gd-img--196 { width: 950px;  }   /* 19:6  → 950px */
+  .gd-img--916 { width: 169px;  }   /* 9:16  → 169px */
+  .gd-img--auto {
+  width: 300px; /* fallback */
+}
+  
+
+  .gd-img img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform .5s ease, filter .4s ease;
+    filter: brightness(.92);
+    display: block;
+  }
+  .gd-img:hover img { transform: scale(1.06); filter: brightness(1.05); }
+
+  /* Placeholder */
+  .gd-img-ph {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--bg-dark), rgba(1,69,242,.07));
+  }
+  .gd-img-ph::after { content: '🖼'; font-size: 1.6rem; opacity: .1; }
+  .gd-img-ph-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(237,241,245,.12);
+    font-family: var(--font-body);
+  }
+
+  /* Hover caption */
+  .gd-img-cap {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 32px 16px 14px;
+    background: linear-gradient(to top, rgba(18,20,30,.92), transparent);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity .3s, transform .3s;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .gd-img:hover .gd-img-cap { opacity: 1; transform: translateY(0); }
+  .gd-img-cap-name {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--light);
+    margin-bottom: 3px;
+  }
+  .gd-img-cap-ratio {
+    font-size: 0.54rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mint);
+    font-family: var(--font-body);
+  }
+
+  /* Click hint icon */
+  .gd-img-hint {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: rgba(237,241,245,.12);
+    backdrop-filter: blur(6px);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity .3s;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .gd-img:hover .gd-img-hint { opacity: 1; }
+  .gd-img-hint svg { color: var(--light); }
+
+  /* ── Lightbox ── */
+  #gdLightbox {
+    position: fixed; inset: 0;
+    z-index: 999;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(14,15,22,.0);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .35s ease, background .35s ease;
+  }
+  #gdLightbox.open {
+    opacity: 1;
+    pointer-events: all;
+    background: rgba(14,15,22,.92);
+  }
+  .gd-lb-img {
+    max-width: min(92vw, 1200px);
+    max-height: 88vh;
+    border-radius: 10px;
+    box-shadow: 0 40px 120px rgba(0,0,0,.7);
+    transform: scale(.88);
+    transition: transform .38s cubic-bezier(.34,1.3,.64,1);
+    object-fit: contain;
+    display: block;
+    background: var(--bg-dark);
+  }
+  #gdLightbox.open .gd-lb-img { transform: scale(1); }
+
+  /* Lightbox placeholder (no image set) */
+  .gd-lb-ph {
+    width: min(70vw, 800px);
+    height: min(55vh, 500px);
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid rgba(237,241,245,.08);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+    transform: scale(.88);
+    transition: transform .38s cubic-bezier(.34,1.3,.64,1);
+  }
+  #gdLightbox.open .gd-lb-ph { transform: scale(1); }
+  .gd-lb-ph-label { font-size: 0.7rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(237,241,245,.2); font-family: var(--font-body); }
+
+  .gd-lb-close {
+    position: fixed;
+    top: 24px; right: 28px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(237,241,245,.08);
+    border: 1px solid rgba(237,241,245,.12);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--light);
+    transition: background .2s;
+    z-index: 2;
+  }
+  .gd-lb-close:hover { background: rgba(237,241,245,.16); }
+
+  .gd-lb-caption {
+    position: fixed;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(28,30,42,.85);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 100px;
+    border: 1px solid rgba(237,241,245,.08);
+    white-space: nowrap;
+  }
+  .gd-lb-cap-name {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--light);
+  }
+  .gd-lb-cap-tag {
+    font-size: 0.58rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--mint);
+    font-family: var(--font-body);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .subpage-hero { padding: 48px 24px 36px; }
+    .subpage-count { display: none; }
+    .gd-nav { padding: 0 16px; }
+    .gd-section { padding: 52px 0 64px; }
+    .gd-section-header { padding: 0 24px; grid-template-columns: 1fr; }
+    .gd-project-meta { padding: 0 24px; }
+    .gd-carousel-track { padding: 8px 24px; }
+    .gd-img { height: 200px; }
+    .gd-img--sq  { height: 200px; width: 200px; }
+    .gd-img--169 { height: 200px; width: calc(200px * 16 / 9); }
+    .gd-img--196 { height: 200px; width: calc(200px * 19 / 6); }
+    .gd-img--916 {
+    height: 200px;
+    width: calc(200px * 9 / 16); }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .subpage-hero { padding: 56px 32px 44px; }
+    .gd-nav { padding: 0 32px; }
+    .gd-section-header { padding: 0 32px; }
+    .gd-project-meta { padding: 0 32px; }
+    .gd-carousel-track { padding: 8px 32px; }
+    
+  }
+
+  /* ════════════════════════════════
+     VIDEO EDITOR PAGE
+  ════════════════════════════════ */
+  #page-ve { padding-top: var(--nav-h); min-height: 100vh; background: var(--bg); }
+
+  .ve-mosaic { padding: 56px 40px 100px; max-width: 1200px; margin: 0 auto; }
+  .ve-mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 60px;
+    gap: 16px;
+  }
+  .ve-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--bg-card);
+    border: 1px solid rgba(237,241,245,.06);
+  }
+  /* ── VE Mosaic: clean 2-row layout ── */
+  .ve-mosaic { padding: 56px 40px 100px; max-width: 1400px; margin: 0 auto; }
+  .ve-mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 320px 320px 320px;
+    gap: 12px;
+  }
+
+  .ve-card {
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid rgba(237,241,245,.06);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ✏️ Edit titles directly in the HTML */
+  .ve-card-title {
+    flex-shrink: 0;
+    padding: 10px 14px 9px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--light);
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid rgba(237,241,245,.07);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ve-slot-1 { grid-column: 1 / 7;  grid-row: 1; }
+  .ve-slot-2 { grid-column: 7 / 10; grid-row: 1 / 3; }
+  .ve-slot-3 { grid-column: 10/ 13; grid-row: 1; }
+  .ve-slot-4 { grid-column: 1 / 7;  grid-row: 2; }
+  .ve-slot-5 { grid-column: 10/ 13; grid-row: 2; }
+  .ve-slot-6 { grid-column: 1 / 4;  grid-row: 3; }
+  .ve-slot-7 { grid-column: 4 / 10; grid-row: 3; }
+  .ve-slot-8 { grid-column: 10/ 13; grid-row: 3; }
+
+  .ve-embed-wrapper {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+  .ve-embed-wrapper iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+  .ve-empty {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px;
+    background: linear-gradient(145deg, var(--bg-card), rgba(36,235,158,.04));
+  }
+  .ve-empty-icon {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: rgba(36,235,158,.08);
+    border: 1.5px solid rgba(36,235,158,.15);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ve-empty-icon svg { opacity: .3; color: var(--mint); }
+  .ve-empty-ratio {
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(237,241,245,.2);
+    font-family: var(--font-body);
+  }
+
+  /* Mobile: vertical stack */
+  .ve-mobile-list { display: none; flex-direction: column; gap: 20px; padding: 32px 20px 80px; }
+  .ve-mobile-card {
+    border-radius: 10px; overflow: hidden;
+    background: var(--bg-card); border: 1px solid rgba(237,241,245,.06);
+    display: flex; flex-direction: column;
+  }
+  .ve-mobile-card--16-9 .ve-embed-wrapper { aspect-ratio: 16/9; flex: none; position: relative; }
+  .ve-mobile-card--9-16 .ve-embed-wrapper  { aspect-ratio: 9/16;  flex: none; position: relative; }
+  .ve-mobile-card iframe { width: 100%; height: 100%; border: none; position: absolute; inset: 0; }
+
+  @media (max-width: 768px) {
+    .ve-mosaic { display: none; }
+    .ve-mobile-list { display: flex; }
+  }
+  @media (min-width: 769px) and (max-width: 1024px) {
+    .ve-mosaic-grid { grid-template-rows: 220px 220px 220px; gap: 8px; }
+    .ve-mosaic { padding: 40px 24px 80px; }
+  }
+
+  /* ════════════════════════════════
+     TRANSITIONS & REVEAL
+  ════════════════════════════════ */
+  .page { animation: none; }
+  .page.active { animation: fadeIn .35s ease forwards; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  .divider-rule { height: 1px; background: linear-gradient(to right, transparent, rgba(237,241,245,.1), transparent); margin: 0 40px; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ WELCOME SPLASH ══════════════════ -->
+<div id="welcome-splash" onclick="dismissSplash()">
+  <div class="splash-grid"></div>
+  <div class="splash-orb splash-orb--blue"></div>
+  <div class="splash-orb splash-orb--mint"></div>
+  <span class="splash-corner splash-corner--tl">Jakarta · 2026</span>
+  <span class="splash-corner splash-corner--tr">Graphic Design<br>Video Editor</span>
+  <span class="splash-corner splash-corner--bl">Portfolio</span>
+  <span class="splash-corner splash-corner--br">Creative Works</span>
+  <div class="splash-name">Hanifan Yasfa Ahsan</div>
+  <div class="splash-content">
+    <p class="splash-year">Portfolio · 2026</p>
+    <h1 class="splash-title">Creative<span>Works</span></h1>
+    <p class="splash-sub">Explore the selected works across digital media &amp; visual design.</p>
+    <div class="splash-cta">
+      <div class="splash-cta-ring">
+        <svg class="splash-cta-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+      </div>
+      <span class="splash-cta-label">Click anywhere to enter</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ NAVBAR ══════════════════ -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="goHome()">Portfolio <span>2026</span></div>
+  <div id="nav-right-home" class="nav-links">
+    <a onclick="scrollToSection('about')">About</a>
+    <a onclick="scrollToSection('contact')">Contact</a>
+  </div>
+  <button id="nav-right-sub" class="nav-back" style="display:none" onclick="goHome()">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+    Back to Home
+  </button>
+</nav>
+
+<!-- ══════════════════ HOME PAGE ══════════════════ -->
+<div class="page active" id="page-home">
+
+  <section class="hero" id="heroSection">
+    <div class="hero-divider"></div>
+
+    <!-- ✏️ GD background: set HERO_GD_IMAGE in the JS config below -->
+    <div class="hero-card hero-card--gd"
+         onmouseenter="heroHover('gd')"
+         onmouseleave="heroLeave()"
+         onclick="goToPage('gd')">
+      <div class="hero-bg" id="heroBgGd"></div>
+      <div class="hero-scrim"></div>
+      <!--<span class="hero-num">GD</span>-->
+      <div class="hero-tag">Graphic Design</div>
+      <h2 class="hero-title">Visual<br><em>Designer</em></h2>
+      <p class="hero-sub">Social media post, logo design, UI/ Web design, brand collateral, thumbnail design, 3D design</p>
+      <button class="hero-cta">View Work <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></button>
+    </div>
+
+    <!-- ✏️ VE background: set HERO_VE_IMAGE in the JS config below -->
+    <div class="hero-card hero-card--ve"
+         onmouseenter="heroHover('ve')"
+         onmouseleave="heroLeave()"
+         onclick="goToPage('ve')">
+      <div class="hero-bg" id="heroBgVe"></div>
+      <div class="hero-scrim"></div>
+      <!--<span class="hero-num">VE</span>-->
+      <div class="hero-tag">Video Editor</div>
+      <h2 class="hero-title">Motion &amp;<br><em>Editing</em></h2>
+      <p class="hero-sub">Podcast videos, education content, motion graphic, brand videos, shorts & reels</p>
+      <button class="hero-cta">View Work <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></button>
+    </div>
+  </section>
+
+  <section id="about">
+    <p class="section-eyebrow reveal">About</p>
+    <h2 class="section-title reveal">Creative<br><he-gr>Identity.</he-gr></h2>
+    <div style="width:60px;height:2px;background:var(--blue);margin-bottom:0;"></div>
+    <div class="about-body">
+      <div class="about-text reveal">
+        <p>Hi, I’m Hanif. I am a designer and video editor with over 6 years of experience. I have worked across the various design fields. I like to combine creativity with marketing and attention to detail.</p>
+        <p>I really like working with people. I am always adapting to new technologies, such as Artificial Intelligence, to improve my work and achieve better results.
+          <br>I have been in charge of design and digital projects in different areas, making things that people notice and that help companies achieve their goals, and making plans. I also helped two companies get listed on the Indonesia Stock Exchange.</p>
+        <div class="about-skill-categories">
+
+          <div class="skill-category">
+            <span class="skill-category-label">Creative Tools</span>
+            <div class="skill-chips">
+              <span class="skill-chip skill-chip--creative">Adobe Photoshop</span>
+              <span class="skill-chip skill-chip--creative">Adobe Illustrator</span>
+              <span class="skill-chip skill-chip--creative">Figma</span>
+              <span class="skill-chip skill-chip--creative">Adobe Premiere Pro</span>
+              <span class="skill-chip skill-chip--creative">Adobe After Effects</span>
+              <span class="skill-chip skill-chip--creative">Studio visual code</span>
+              <span class="skill-chip skill-chip--creative">DaVinci Resolve</span>
+              <span class="skill-chip skill-chip--creative">SketchUp</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <span class="skill-category-label">AI Tools</span>
+            <div class="skill-chips">
+              <span class="skill-chip skill-chip--ai">Midjourney</span>
+              <span class="skill-chip skill-chip--ai">Adobe Firefly</span>
+              <span class="skill-chip skill-chip--ai">Open AI</span>
+              <span class="skill-chip skill-chip--ai">ElevenLabs</span>
+              <span class="skill-chip skill-chip--ai">NotebookLM</span>
+              <span class="skill-chip skill-chip--ai">Gemini</span>
+              <span class="skill-chip skill-chip--ai">Manus AI</span>
+              <span class="skill-chip skill-chip--ai">Flow AI</span>
+              <span class="skill-chip skill-chip--ai">Claude</span>
+            </div>
+          </div>
+
+          <div class="skill-category">
+            <span class="skill-category-label">Language</span>
+            <div class="skill-chips">
+              <span class="skill-chip skill-chip--lang">Indonesian — Native</span>
+              <span class="skill-chip skill-chip--lang">English — Upper-Intermediate</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-item"><div class="stat-num">6<span>+</span></div><div class="stat-label">Years of Experience</div></div>
+        <div class="stat-item"><div class="stat-num">50<span>+</span></div><div class="stat-label">Projects Delivered</div></div>
+        <div class="stat-item"><div class="stat-num">8<span>+</span></div><div class="stat-label">Clients Worldwide</div></div>
+        <!-- ✏️ EDIT: replace href with your resume URL or file path -->
+        <a class="resume-btn" href="#" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="12" y1="18" x2="12" y2="12"/>
+            <line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+          My Resume
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-inner">
+      <p class="section-eyebrow reveal">Contact</p>
+      <h2 class="section-title reveal">Let's work<br>together</h2>
+      <p class="contact-desc reveal">I'm open for full-time, part-time, and freelance work to the creative collaborations. Drop me a message and let's make something great.</p>
+      <div class="contact-links reveal">
+        <!-- ✏️ EDIT: replace href with your email -->
+        <a class="contact-link primary" href="mailto:hyasfa30@gmail.com">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="13" height="9" rx="1.5"/><path d="M1 4l6.5 4.5L14 4"/></svg>
+          Hire Me
+        </a>
+        <!-- ✏️ EDIT: replace href with your Instagram URL -->
+        <a class="contact-link" href="https://linkedin.com/in/hanifan-yasfa" target="_blank">
+          <svg xmlns="http://w3.org" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+  <path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8.3 18.7H5.1V10.5h3.2v8.2zM6.7 9.1c-1 0-1.8-.8-1.8-1.8s.8-1.8 1.8-1.8 1.8.8 1.8 1.8-.8 1.8-1.8 1.8zm12 9.6h-3.2v-5.1c0-1.2-1-2.2-2.2-2.2s-2.2 1-2.2 2.2v5.1H8.3V10.5h3.2v1.1c.6-.9 1.8-1.5 2.9-1.5 2.2 0 4 1.8 4 4v4.6z"/>
+</svg>
+          linkedin
+        </a>
+        <!-- ✏️ EDIT: replace href with your Behance URL -->
+        <a class="contact-link" href="https://www.behance.net/gallery/249684015/Portfolio-2026" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 11.5c1.38 0 2.5-1.12 2.5-2.5S8.88 6.5 7.5 6.5H2v9h6c1.38 0 2.5-1.12 2.5-2.5S8.88 11.5 7.5 11.5zM4 8.5h3c.55 0 1 .45 1 1s-.45 1-1 1H4V8.5zm3.5 5.5H4v-2h3.5c.55 0 1 .45 1 1s-.45 1-1 1zm6.5-9h5v1.5h-5V5zm6.7 6.5h-7.2c0 1.38 1.12 2.5 2.5 2.5.97 0 1.81-.55 2.22-1.35H22c-.65 2.09-2.6 3.6-4.8 3.6C14.31 16.25 12 13.94 12 11c0-2.94 2.31-5.25 5.2-5.25 2.89 0 5.2 2.31 5.2 5.25 0 .18-.01.35-.03.5zM17.2 8.25c-1.25 0-2.3.9-2.5 2h5c-.2-1.1-1.25-2-2.5-2z"/></svg>
+          Behance
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Portfolio 2026</div>
+    <div class="footer-copy">© 2026. All rights reserved.</div>
+  </footer>
+</div>
+
+
+<!-- ══════════════════ GRAPHIC DESIGN PAGE ══════════════════ -->
+<div class="page" id="page-gd">
+
+  <div class="subpage-hero">
+    <div>
+      <p class="section-eyebrow">Graphic Design</p>
+      <h1 class="section-title">Visual Portfolio</h1>
+      <p class="subpage-desc">A selected works across various design fields.</p>
+    </div>
+  </div>
+
+  <div class="gd-nav" id="gdNav">
+    <div class="gd-nav-item active" onclick="gdScrollTo('gd-s1',this)">Social Media</div>
+    <div class="gd-nav-item" onclick="gdScrollTo('gd-s2',this)">Logo Design</div>
+    <div class="gd-nav-item" onclick="gdScrollTo('gd-s3',this)">UI / Web</div>
+    <div class="gd-nav-item" onclick="gdScrollTo('gd-s4',this)">Brand Collateral</div>
+    <div class="gd-nav-item" onclick="gdScrollTo('gd-s5',this)">Thumbnail</div>
+    <div class="gd-nav-item" onclick="gdScrollTo('gd-s6',this)">3D Design</div>
+  </div>
+
+  <!-- ══ 01 · SOCIAL MEDIA ══ -->
+  <div class="gd-section" id="gd-s1">
+    <div class="gd-section-header">
+      <div>
+        <h2 class="gd-section-title">Social Media<br><span style="color: var(--mint);">Design</span></h2>
+        <!--<p class="gd-section-desc">Scroll-stopping visuals crafted for Instagram and digital campaigns. Each post balances brand voice with platform-native aesthetics — built to perform.</p>-->
+      </div>
+      
+    </div>
+    <div class="gd-projects">
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">ChatBar AI</div>
+            <div class="gd-project-desc">ChatBar AI is a real-time, voice-enabled AI chat that learns directly from your website (or any internal docs) and answers visitors 24/7. It’s built to match your brand’s look and tone, so the conversation feels native to your site.
+                                      <br>I led the development of ChatBar AI’s brand guidelines, focusing on crafting a tone that reflects a professional and understated visual identity. The design approach prioritizes clarity and restraint, ensuring the brand feels polished without being visually overwhelming.
+                                      <br>Alongside this, I worked as a video editor, creating simple motion graphics to enhance content delivery and maintain consistency across visual touchpoints.</div>
+          </div>
+          <!--<span class="gd-project-tag">3 Posts · 1:1</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--sq" data-lb-name="ChatBar AI" data-lb-tag="Social Media · 1:1"><img src="img/chatbar-ai/sm1.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="ChatBar AI" data-lb-tag="Social Media · 1:1"><img src="img/chatbar-ai/sm3.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="ChatBar AI" data-lb-tag="Social Media · 1:1"><img src="img/chatbar-ai/sm2.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="ChatBar AI" data-lb-tag="Social Media · 1:1"><img src="img/chatbar-ai/sm4.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="ChatBar AI" data-lb-tag="Social Media · 1:1"><img src="img/chatbar-ai/sm6.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="ChatBar AI" data-lb-tag="Social Media · 1:1"><img src="img/chatbar-ai/sm5.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">TWOMC Digital Agency</div>
+            <div class="gd-project-desc">I developed the brand guidelines for TWOMC, with a strong focus on establishing a tone that aligns with the brand’s identity. The visual direction emphasizes a professional and minimal approach, avoiding overly loud or distracting elements to maintain clarity and trust.
+                                      <br>In addition to brand development, I also contributed as a video editor, producing several simple motion graphics to support the brand’s communication across digital platforms.</div>
+          </div>
+          <!--<span class="gd-project-tag">2 Posts · 1:1</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm1.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm2.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm4.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm3.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm5.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm9.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm7.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="TWOMC Digital Agency" data-lb-tag="Social Media · 1:1"><img src="img/twomc/sm8.webp" alt="TWOMC"><div class="gd-img-cap"><span class="gd-img-cap-name">TWOMC</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">Tegor Tribal</div>
+            <div class="gd-project-desc">Tribal Tegor is a seasoning product or dry chili sambal made from shrimp paste and dried chili. In its social media design, I highlight the intense spiciness the product delivers and create a sense of curiosity that encourages the audience to want to try, and ultimately buy it.</div>
+          </div>
+          <!--<span class="gd-project-tag">2 Posts · 1:1 &amp; 19:6</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--sq" data-lb-name="Tergor Tribal" data-lb-tag="Social Media · 1:1"><img src="img/tt/tt1.webp" alt="Tegor Tribal"><div class="gd-img-cap"><span class="gd-img-cap-name">Tegor Tribal</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Tergor Tribal" data-lb-tag="Social Media · 1:1"><img src="img/tt/tt2.webp" alt="Tegor Tribal"><div class="gd-img-cap"><span class="gd-img-cap-name">Tegor Tribal</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Tergor Tribal" data-lb-tag="Social Media · 1:1"><img src="img/tt/tt3.webp" alt="Tegor Tribal"><div class="gd-img-cap"><span class="gd-img-cap-name">Tegor Tribal</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--916" data-lb-name="Tergor Tribal" data-lb-tag="Social Media · 9:16"><img src="img/tt/tt4.webp" alt="Tegor Tribal"><div class="gd-img-cap"><span class="gd-img-cap-name">Tegor Tribal</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">SAKENA</div>
+            <div class="gd-project-desc">Sakena is a startup specializing in residential construction and interior design, based in Jakarta Raya, Indonesia. The feed designs I created are intended to strengthen trust and increase awareness among its target market.
+                                      <br>I created visually focused designs aimed at increasing brand awareness. I highlighted the brand’s color identity while clearly communicating the products being offered.
+                                      <br>This project challenged me to develop a creative approach using a limited portfolio or product catalog, as well as promoting products that are not typically impulse purchases.Content series for a wellness and lifestyle brand — soft palettes, thoughtful whitespace, and calming compositions that reflect the brand's values of peace and intentional living.</div>
+          </div>
+          <!--<span class="gd-project-tag">2 Posts · 1:1</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Social Media · 1:1"><img src="img/skn/skn1.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Social Media · 1:1"><img src="img/skn/skn2.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Social Media · 1:1"><img src="img/skn/skn3.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Social Media · 1:1"><img src="img/skn/skn5.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Social Media · 1:1"><img src="img/skn/skn4.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Social Media · 1:1"><img src="img/skn/skn6.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ 02 · LOGO DESIGN ══ -->
+  <div class="gd-section" id="gd-s2">
+    <div class="gd-section-header">
+      <div>
+        <h2 class="gd-section-title">Logo<br><span style="color: var(--mint);">Design</span></h2>
+        <!--<p class="gd-section-desc">Wordmarks, symbols, and logo systems built to last — designed for immediate recognition, versatility across mediums, and long-term brand equity.</p>-->
+      </div>
+      
+    </div>
+    <div class="gd-projects">
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">Joypad Game Station</div>
+            <div class="gd-project-desc">Joypad is a gaming rental station. Its visual identity is inspired by a Neon Futuristic concept, giving the brand a modern, tech-driven, and forward-looking appearance.
+                                    <br>The logo is created by merging the shape of a game controller with the brand’s typography, forming a unified visual identity. The design is enhanced with a Neon Futurism color palette to deliver a bold & futuristic.</div>
+          </div>
+          <!--<span class="gd-project-tag">Logo · 16:9</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp0.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp1.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp2.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp3.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp4.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp5.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp6.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Joypad Game Station" data-lb-tag="Logo Detail · 1:1"><img src="img/jp/jp7.webp" alt="Joypad"><div class="gd-img-cap"><span class="gd-img-cap-name">Joypad Game Station</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">SAKENA</div>
+            <div class="gd-project-desc">As a company operating within a related field, I designed the logo by taking the first letter of the company’s name and combining it with the shape of a chair and a house roof. To strengthen its identity, I used a combination of black and red as the primary colors.</div>
+          </div>
+          <!--<span class="gd-project-tag">Logo · 16:9</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg0.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg1.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg2.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg3.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg5.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg4.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg6.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="SAKENA" data-lb-tag="Logo Design · 1:1"><img src="img/skn/skn-lg7.webp" alt="Sakena"><div class="gd-img-cap"><span class="gd-img-cap-name">SAKENA</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ 03 · UI / WEB DESIGN ══ -->
+  <div class="gd-section" id="gd-s3">
+    <div class="gd-section-header">
+      <div>
+        <h2 class="gd-section-title">Digital Interfaces<br><span style="color: var(--mint);">Website Design</span></h2>
+        <!--<p class="gd-section-desc">User interfaces and web layouts designed with a sharp eye for visual hierarchy, usability, and brand consistency — built to guide, delight, and convert.</p>-->
+      </div>
+      
+    </div>
+    <div class="gd-projects">
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">MD Pictures</div>
+            <div class="gd-project-desc">I designed a mockup for a film streaming website interface with a strong emphasis on simplicity and usability. The interface prioritizes intuitive navigation, enabling users to seamlessly browse and explore content across the platform.</div>
+          </div>
+          <!--<span class="gd-project-tag">UI Design · 16:9</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="UI Design"><img src="img/md/md-web1.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="UI Design"><img src="img/md/md-web3.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="UI Design"><img src="img/md/md-web2.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="UI Design"><img src="img/md/md-web4.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">Morenzo Abadi Perkasa</div>
+            <div class="gd-project-desc">I was responsible for the full lifecycle of the website, from design and development to publishing and final handover, for a company newly listed on the Indonesia Stock Exchange (IDX), ensuring a seamless and professional digital presence.</div>
+          </div>
+          <!--<span class="gd-project-tag">UI Design · 16:9</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--auto" data-lb-name="Morenzo Abadi Perkasa" data-lb-tag="UI Design"><img src="img/map/map1.webp" alt="Morenzo Abadi Perkasa"><div class="gd-img-cap"><span class="gd-img-cap-name">PT Morenzo Abadi Perkasa Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="Morenzo Abadi Perkasa" data-lb-tag="UI Design"><img src="img/map/map2.webp" alt="Morenzo Abadi Perkasa"><div class="gd-img-cap"><span class="gd-img-cap-name">PT Morenzo Abadi Perkasa Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="Morenzo Abadi Perkasa" data-lb-tag="UI Design"><img src="img/map/map3.webp" alt="Morenzo Abadi Perkasa"><div class="gd-img-cap"><span class="gd-img-cap-name">PT Morenzo Abadi Perkasa Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="Morenzo Abadi Perkasa" data-lb-tag="UI Design"><img src="img/map/map4.webp" alt="Morenzo Abadi Perkasa"><div class="gd-img-cap"><span class="gd-img-cap-name">PT Morenzo Abadi Perkasa Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ 04 · BRAND COLLATERAL ══ -->
+  <div class="gd-section" id="gd-s4">
+    <div class="gd-section-header">
+      <div>
+        <h2 class="gd-section-title">Brand<br><span style="color: var(--mint);">Collateral</span></h2>
+        <!--<p class="gd-section-desc">Stationery, presentation decks, and collateral that carry a brand into every touchpoint — from business cards to signage, designed with craft and consistency.</p>-->
+      </div>
+      
+    </div>
+    <div class="gd-projects">
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">MD Pictures</div>
+            <div class="gd-project-desc">I was responsible for designing and producing the company’s annual report for the Annual General Meeting (AGM). Each edition was developed with a unique concept and theme, ensuring the brand remains visually relevant and aligned with evolving trends while reinforcing a progressive corporate image.
+                                    <br>The overall design approach focuses on clean, modern, and visually engaging layouts that effectively communicate the company’s presence across the film and digital entertainment industries.</div>
+          </div>
+          <!--<span class="gd-project-tag">Collateral · Mixed AR</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--sq" data-lb-name="MD Pictures" data-lb-tag="Brand Collateral"><img src="img/md/bc5.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="Brand Collateral"><img src="img/md/bc1.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="Brand Collateral"><img src="img/md/bc2.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="Brand Collateral"><img src="img/md/bc3.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="MD Pictures" data-lb-tag="Brand Collateral"><img src="img/md/bc4.webp" alt="MD Pictures"><div class="gd-img-cap"><span class="gd-img-cap-name">MD Pictures Tbk</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ 05 · THUMBNAIL DESIGN ══ -->
+  <div class="gd-section" id="gd-s5">
+    <div class="gd-section-header">
+      <div>
+        <h2 class="gd-section-title">Thumbnail<br><span style="color: var(--mint);">Design</span></h2>
+        <!--<p class="gd-section-desc">YouTube thumbnails engineered for maximum CTR — bold compositions, high contrast, expressive faces, and immediate visual hierarchy that works at any size.</p>-->
+      </div>
+      
+    </div>
+    <div class="gd-projects">
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">ChatBar AI</div>
+            <div class="gd-project-desc">I created thumbnails for both long-form videos and shorts content, ensuring they align with the brand's visual identity. I also standardized their visual style within the brand guidelines to maintain consistency across all platforms.</div>
+          </div>
+          <!--<span class="gd-project-tag">3 Thumbnails · 16:9</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--auto" data-lb-name="ChatBar AI" data-lb-tag="Thumbnail · 16:9"><img src="img/chatbar-ai/tn1.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">16:9</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="ChatBar AI" data-lb-tag="Thumbnail · 9:16"><img src="img/chatbar-ai/tn2.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="ChatBar AI" data-lb-tag="Thumbnail · 16:9"><img src="img/chatbar-ai/tn3.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">16:9</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="ChatBar AI" data-lb-tag="Thumbnail · 9:16"><img src="img/chatbar-ai/tn4.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="ChatBar AI" data-lb-tag="Thumbnail · 16:9"><img src="img/chatbar-ai/tn5.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">16:9</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="ChatBar AI" data-lb-tag="Thumbnail · 9:16"><img src="img/chatbar-ai/tn6.webp" alt="ChatBar AI"><div class="gd-img-cap"><span class="gd-img-cap-name">ChatBar AI</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <div>
+            <div class="gd-project-name">Asian Tigers Group</div>
+            <div class="gd-project-desc">I created the thumbnail designs according to the brand guide. The thumbnail design depends on the video content. The design below is for podcasts and short/reel videos.</div>
+          </div>
+          <!--<span class="gd-project-tag">2 Thumbnails · 16:9</span>-->
+        </div>
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--auto" data-lb-name="Asian Tigers Group" data-lb-tag="Thumbnail · 16:9"><img src="img/atg/atg1.webp" alt="Asian Tigers Group"><div class="gd-img-cap"><span class="gd-img-cap-name">Asian Tigers Group</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="Asian Tigers Group" data-lb-tag="Thumbnail · 16:9"><img src="img/atg/atg2.webp" alt="Asian Tigers Group"><div class="gd-img-cap"><span class="gd-img-cap-name">Asian Tigers Group</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="Asian Tigers Group" data-lb-tag="Thumbnail · 16:9"><img src="img/atg/atg3.webp" alt="Asian Tigers Group"><div class="gd-img-cap"><span class="gd-img-cap-name">Asian Tigers Group</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Asian Tigers Group" data-lb-tag="Thumbnail · 1:1"><img src="img/atg/atg4.webp" alt="Asian Tigers Group"><div class="gd-img-cap"><span class="gd-img-cap-name">Asian Tigers Group</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="Asian Tigers Group" data-lb-tag="Thumbnail · 1:1"><img src="img/atg/atg5.webp" alt="Asian Tigers Group"><div class="gd-img-cap"><span class="gd-img-cap-name">Asian Tigers Group</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="Asian Tigers Group" data-lb-tag="Thumbnail · 9:16"><img src="img/atg/atg6.webp" alt="Asian Tigers Group"><div class="gd-img-cap"><span class="gd-img-cap-name">Asian Tigers Group</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--auto" data-lb-name="Asian Tigers Group" data-lb-tag="Thumbnail · 9:16"><img src="img/atg/atg7.webp" alt="Asian Tigers Group"><div class="gd-img-cap"><span class="gd-img-cap-name">Asian Tigers Group</span><span class="gd-img-cap-ratio">9:16</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ 06 · 3D DESIGN ══ -->
+  <div class="gd-section" id="gd-s6">
+    <div class="gd-section-header">
+      <div>
+        <h2 class="gd-section-title">3D Interior<br><span style="color: var(--mint);">Design</span></h2>
+        <p class="gd-section-desc">I also create 3D interior designs using SketchUp and Archicad. For rendering, I usually use Enscape to produce realistic visualizations.</p>
+      </div>
+      
+    </div>
+    <div class="gd-projects">
+
+      <div class="gd-project">
+        <div class="gd-project-meta">
+          <!--<div>
+            <div class="gd-project-name">3D Works</div>
+            <div class="gd-project-desc">A collection of three-dimensional design explorations — from product renders and abstract compositions to branded 3D assets created for digital campaigns and motion projects.</div>
+          </div>
+          <span class="gd-project-tag">3D · Mixed AR</span>
+        </div>-->
+        <div class="gd-carousel" data-dir="auto">
+          <div class="gd-carousel-track">
+            <div class="gd-img gd-img--169" data-lb-name="3D Work" data-lb-tag="3D Design · 16:9"><div class="gd-img-ph"><span class="gd-img-ph-label">Image not set</span></div><div class="gd-img-cap"><span class="gd-img-cap-name">3D Work</span><span class="gd-img-cap-ratio">16:9</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="3D Work" data-lb-tag="3D Design · 1:1"><div class="gd-img-ph"><span class="gd-img-ph-label">Image not set</span></div><div class="gd-img-cap"><span class="gd-img-cap-name">3D Work</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+            <div class="gd-img gd-img--sq" data-lb-name="3D Work" data-lb-tag="3D Design · 1:1"><div class="gd-img-ph"><span class="gd-img-ph-label">Image not set</span></div><div class="gd-img-cap"><span class="gd-img-cap-name">3D Work</span><span class="gd-img-cap-ratio">1:1</span></div><div class="gd-img-hint"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Portfolio 2026</div>
+    <div class="footer-copy">Graphic Design</div>
+  </footer>
+</div>
+</div>
+<!-- Lightbox -->
+<div id="gdLightbox" onclick="gdCloseLightbox(event)">
+  <button class="gd-lb-close" onclick="gdCloseLightbox()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <div id="gdLbContent"></div>
+  <div class="gd-lb-caption" id="gdLbCaption"></div>
+</div>
+
+
+<!-- ══════════════════ VIDEO EDITOR PAGE ══════════════════ -->
+<div class="page" id="page-ve">
+  <div class="subpage-hero">
+    <div>
+      <p class="section-eyebrow">Video Editor</p>
+      <h1 class="section-title">Motion & Editing</h1>
+      <p class="subpage-desc">A selected works in various format.</p>
+    </div>
+  </div>
+
+  <div class="ve-mosaic">
+    <div class="ve-mosaic-grid" id="veMosaicGrid"></div>
+  </div>
+
+  <div class="ve-mobile-list" id="veMobileList"></div>
+
+  <footer>
+    <div class="footer-logo">Portfolio 2026</div>
+    <div class="footer-copy">Video Editor</div>
+  </footer>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  OWNER CONFIGURATION — edit these values only
+// ══════════════════════════════════════════════════════
+
+// HERO BACKGROUND IMAGES
+// Set each to an image path or URL, or null to show no background image.
+// The radial gradient and dark overlay will always remain on top.
+const HERO_GD_IMAGE = 'DG.webp'; // e.g. 'images/hero-gd.jpg'
+const HERO_VE_IMAGE = 'VE.webp'; // e.g. 'images/hero-ve.jpg'
+
+// ══════════════════════════════════════════════════════
+//  OWNER CONFIGURATION — edit these values only
+// ══════════════════════════════════════════════════════
+
+//  VIDEO EDITOR — edit title and youtubeId for each slot.
+// Set youtubeId to null to show an empty placeholder.
+const VE_SLOTS = [
+  { slot: 1, ratio: '16:9', mobileRatio: '16-9', youtubeId: 'zQ7hxkJRl_k?autoplay=1&controls=1', title: 'PT Morenzo Abadi Perkasa - Company Profile Video' },
+  { slot: 2, ratio: '9:16', mobileRatio: '9-16',  youtubeId: 'DJyeV-DfLzc',           title: 'Asian Tigers Group - Shorts/Reels Video' },
+  { slot: 3, ratio: '16:9', mobileRatio: '16-9', youtubeId: '1up67Imw7nM',           title: 'ChatBar AI - Educational Content' },
+  { slot: 4, ratio: '16:9', mobileRatio: '16-9', youtubeId: 'byUZJC7jj6Y',           title: 'Asian Tigers Intro - Motion Graphic' },
+  { slot: 5, ratio: '16:9', mobileRatio: '16-9', youtubeId: 'RHo5KMWdK6w',           title: 'ChatBar AI - Motion Graphic' },
+  { slot: 6, ratio: '9:16', mobileRatio: '9-16',  youtubeId: 'I9Fqv-ViQ7g',           title: 'Asian Tigers Singapore - Shorts/Reels Video' },
+  { slot: 7, ratio: '16:9', mobileRatio: '16-9', youtubeId: '3r_1Pu-eXLw',           title: 'ChatBar AI - Learning Video' },
+  { slot: 8, ratio: '16:9', mobileRatio: '16-9', youtubeId: 'NL-jNLRl0CU',           title: 'Asian Tigers Group - Podcast Video' },
+];
+
+// Splash
+function dismissSplash() {
+  const s = document.getElementById('welcome-splash');
+  s.classList.add('dismissing');
+  setTimeout(() => { s.style.display = 'none'; }, 720);
+}
+
+// Hero hover — expands hovered card to 3/4 of screen width
+function heroHover(side) {
+  const hero = document.getElementById('heroSection');
+  hero.classList.remove('hover-gd', 'hover-ve');
+  hero.classList.add('hover-' + side);
+}
+function heroLeave() {
+  const hero = document.getElementById('heroSection');
+  hero.classList.remove('hover-gd', 'hover-ve');
+}
+
+// Inject hero background images from config
+(function initHeroBg() {
+  if (HERO_GD_IMAGE) {
+    document.getElementById('heroBgGd').style.backgroundImage = `url('${HERO_GD_IMAGE}')`;
+  }
+  if (HERO_VE_IMAGE) {
+    document.getElementById('heroBgVe').style.backgroundImage = `url('${HERO_VE_IMAGE}')`;
+  }
+})();
+
+// Routing
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const isHome = id === 'page-home';
+  document.getElementById('nav-right-home').style.display = isHome ? 'flex' : 'none';
+  document.getElementById('nav-right-sub').style.display  = isHome ? 'none'  : 'flex';
+  window.scrollTo(0, 0);
+}
+function goHome() { showPage('page-home'); }
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ── Graphic Design: section nav scroll ──
+function gdScrollTo(sectionId, navEl) {
+  const section = document.getElementById(sectionId);
+  if (!section) return;
+  const offset = 68 + 52;
+  const top = section.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top, behavior: 'smooth' });
+  document.querySelectorAll('.gd-nav-item').forEach(el => el.classList.remove('active'));
+  if (navEl) navEl.classList.add('active');
+}
+
+// Auto-highlight gd-nav on scroll
+function gdNavObserve() {
+  const sections = document.querySelectorAll('.gd-section');
+  const navItems = document.querySelectorAll('.gd-nav-item');
+  if (!sections.length) return;
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        navItems.forEach(el => {
+          el.classList.toggle('active', el.getAttribute('onclick').includes(id));
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => obs.observe(s));
+}
+gdNavObserve();
+
+// ── Carousel engine ──
+function initCarousels() {
+  const carousels = document.querySelectorAll('.gd-carousel[data-dir="auto"]');
+  carousels.forEach((carousel, globalIndex) => {
+    if (carousel.dataset.inited) return;
+    carousel.dataset.inited = '1';
+
+    const track = carousel.querySelector('.gd-carousel-track');
+    if (!track) return;
+
+    const dir = globalIndex % 2 === 0 ? 'left' : 'right';
+
+    // Clone enough sets to always overfill viewport — guarantees seamless loop
+    const origItems = Array.from(track.children);
+    if (!origItems.length) return;
+
+    // Measure one set width first
+    let singleSetW = 0;
+    origItems.forEach(el => { singleSetW += el.offsetWidth + 12; });
+
+    // Need at least 3× viewport width of clones so there's never a gap
+    const minFill = window.innerWidth * 3;
+    const setsNeeded = Math.ceil(minFill / singleSetW) + 1;
+    for (let s = 0; s < setsNeeded; s++) {
+      origItems.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
+      });
+    }
+
+    const totalW = singleSetW;
+
+    // Inject keyframe — left loops 0→-W, right loops -W→0
+    const animId = 'gdscroll' + globalIndex;
+    const sheet = document.createElement('style');
+    sheet.textContent = dir === 'left'
+      ? `@keyframes ${animId}{0%{transform:translateX(0)}100%{transform:translateX(-${totalW}px)}}`
+      : `@keyframes ${animId}{0%{transform:translateX(-${totalW}px)}100%{transform:translateX(0)}}`;
+    document.head.appendChild(sheet);
+
+    // For right direction, start track already offset so there's no empty space at start
+    if (dir === 'right') {
+      track.style.transform = `translateX(-${totalW}px)`;
+    }
+
+    const duration = Math.min(40, Math.max(10, totalW / 72));
+    track.style.animation = `${animId} ${duration}s linear infinite`;
+
+    // ── Drag to scrub ──
+    let isDragging = false;
+    let startX = 0;
+    let currentOffset = 0;    // accumulated drag offset in px
+    let animStartOffset = 0;  // track position when drag starts
+
+    // Read current rendered translateX from the animation
+    function getComputedX() {
+      const matrix = window.getComputedStyle(track).transform;
+      if (!matrix || matrix === 'none') return 0;
+      const m = new DOMMatrix(matrix);
+      return m.m41;
+    }
+
+    function dragStart(e) {
+      isDragging = true;
+      startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+
+      // Freeze animation at current visual position
+      animStartOffset = getComputedX();
+      track.style.animationPlayState = 'paused';
+      track.style.transform = `translateX(${animStartOffset}px)`;
+      track.style.animationName = 'none'; // detach animation entirely
+
+      carousel.style.cursor = 'grabbing';
+      currentOffset = animStartOffset;
+    }
+
+    function dragMove(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      const clientX = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+      const delta = clientX - startX;
+      currentOffset = animStartOffset + delta;
+
+      // Wrap within totalW bounds so it stays seamless
+      let x = currentOffset % totalW;
+      if (x > 0) x -= totalW;
+      track.style.transform = `translateX(${x}px)`;
+    }
+
+    function dragEnd() {
+      if (!isDragging) return;
+      isDragging = false;
+      carousel.style.cursor = 'grab';
+
+      // Resume animation from current drag position
+      let x = currentOffset % totalW;
+      if (x > 0) x -= totalW;
+
+      // Determine progress ratio and restart animation mid-way
+      const progress = dir === 'left'
+        ? Math.abs(x) / totalW
+        : 1 - Math.abs(x) / totalW;
+
+      track.style.animationName = animId;
+      track.style.animationDelay = `-${progress * duration}s`;
+      track.style.animationPlayState = 'running';
+      track.style.transform = '';
+    }
+
+    // Mouse events
+    carousel.addEventListener('mousedown', dragStart);
+    window.addEventListener('mousemove', dragMove);
+    window.addEventListener('mouseup', dragEnd);
+
+    // Touch events
+    carousel.addEventListener('touchstart', dragStart, { passive: true });
+    carousel.addEventListener('touchmove', dragMove, { passive: false });
+    carousel.addEventListener('touchend', dragEnd);
+
+    // Grab cursor hint
+    carousel.style.cursor = 'grab';
+  });
+}
+
+// Event delegation for lightbox — only fires if it wasn't a drag
+let _gdDragMoved = false;
+document.addEventListener('mousedown', () => { _gdDragMoved = false; });
+document.addEventListener('mousemove', e => { if (e.buttons === 1) _gdDragMoved = true; });
+
+document.addEventListener('click', e => {
+  if (_gdDragMoved) return; // was a drag, not a tap
+  const img = e.target.closest('.gd-img[data-lb-name]');
+  if (!img) return;
+  gdOpenLightbox(img);
+});
+
+// Run once when GD page is first shown
+function goToPage(which) {
+  if (which === 'gd') {
+    showPage('page-gd');
+    requestAnimationFrame(() => initCarousels());
+  } else if (which === 've') {
+    showPage('page-ve');
+    initVE();
+  }
+}
+
+// ── Video Editor: build from VE_SLOTS config ──
+let veInited = false;
+function initVE() {
+  if (veInited) return;
+  veInited = true;
+
+  const mosaic     = document.getElementById('veMosaicGrid');
+  const mobileList = document.getElementById('veMobileList');
+  const playIcon   = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+
+  VE_SLOTS.forEach(cfg => {
+    const inner = cfg.youtubeId
+      ? `<div class="ve-embed-wrapper">
+           <iframe src="https://www.youtube.com/embed/${cfg.youtubeId}?controls=1&rel=0&modestbranding=1&mute=1"
+             allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+             allowfullscreen loading="lazy"></iframe>
+         </div>`
+      : `<div class="ve-embed-wrapper">
+           <div class="ve-empty">
+             <div class="ve-empty-icon">${playIcon}</div>
+             <span class="ve-empty-ratio">${cfg.ratio}</span>
+           </div>
+         </div>`;
+
+    // Mosaic card
+    const card = document.createElement('div');
+    card.className = `ve-card ve-slot-${cfg.slot}`;
+    card.innerHTML = `<div class="ve-card-title">${cfg.title}</div>${inner}`;
+    mosaic.appendChild(card);
+
+    // Mobile card
+    const mCard = document.createElement('div');
+    mCard.className = `ve-mobile-card ve-mobile-card--${cfg.mobileRatio}`;
+    mCard.innerHTML = `<div class="ve-card-title">${cfg.title}</div>${inner}`;
+    mobileList.appendChild(mCard);
+  });
+}
+
+// ── Lightbox ──
+function gdOpenLightbox(imgEl) {
+  const name = imgEl.dataset.lbName || '';
+  const tag  = imgEl.dataset.lbTag  || '';
+  const lb      = document.getElementById('gdLightbox');
+  const content = document.getElementById('gdLbContent');
+  const caption = document.getElementById('gdLbCaption');
+  if (!lb) return;
+
+  const srcImg = imgEl.querySelector('img');
+  content.innerHTML = '';
+
+  if (srcImg && srcImg.src && !srcImg.src.endsWith(window.location.href)) {
+    const img = document.createElement('img');
+    img.className = 'gd-lb-img';
+    img.src = srcImg.src;
+    img.alt = name;
+    content.appendChild(img);
+  } else {
+    const ph = document.createElement('div');
+    ph.className = 'gd-lb-ph';
+    ph.innerHTML = `<span style="font-size:2.5rem;opacity:.15">🖼</span><span class="gd-lb-ph-label">${name}</span>`;
+    content.appendChild(ph);
+  }
+
+  caption.innerHTML = `<span class="gd-lb-cap-name">${name}</span><span class="gd-lb-cap-tag">${tag}</span>`;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function gdCloseLightbox(e) {
+  if (e && e.target.closest('.gd-lb-img, .gd-lb-ph, .gd-lb-caption')) return;
+  const lb = document.getElementById('gdLightbox');
+  if (!lb) return;
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') gdCloseLightbox();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  function updateAutoRatio() {
+
+    const targetHeight =
+      window.innerWidth <= 768 ? 200 : 300;
+
+    document.querySelectorAll('.gd-img--auto img').forEach(img => {
+
+      const parent = img.closest('.gd-img');
+
+      if (!parent) return;
+      if (!img.naturalWidth) return;
+
+      const ratio = img.naturalWidth / img.naturalHeight;
+
+      parent.style.width = `${targetHeight * ratio}px`;
+    });
+  }
+
+  document.querySelectorAll('.gd-img--auto img').forEach(img => {
+    if (img.complete) {
+      updateAutoRatio();
+    } else {
+      img.addEventListener('load', updateAutoRatio);
+    }
+  });
+
+  window.addEventListener('resize', updateAutoRatio);
+
+});
+
+</script>
+</body>
+</html>
